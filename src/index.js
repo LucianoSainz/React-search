@@ -17,27 +17,28 @@ class App extends Component {
         };
 
         this.videoSearch('surfboards');
-
-        videoSearch(term) {
-            YTSearch({ key: API_KEY, term: 'surfboards' }, (videos) => {
-                this.setState({
-                    videos: videos,
-                    selectedVideo: videos[0]
-                });
-            });
-        }
-
-        render() {
-            return (
-                <div>
-                    <SearchBar />
-                    <VideoDetail video={this.state.selectedVideo} />
-                    <VideoList
-                        onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
-                        videos={this.state.videos} />
-                </div>
-            );
-        }
     }
 
-    ReactDOM.render(<App />, document.querySelector('.container'));
+    videoSearch(term) {
+        YTSearch({ key: API_KEY, term: term }, (videos) => {
+            this.setState({
+                videos: videos,
+                selectedVideo: videos[0]
+            });
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <SearchBar onSearchTermChange={term => this.videoSearch(TextDecoderStream)} />
+                <VideoDetail video={this.state.selectedVideo} />
+                <VideoList
+                    onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
+                    videos={this.state.videos} />
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<App />, document.querySelector('.container'));
